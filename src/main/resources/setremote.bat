@@ -1,0 +1,3 @@
+@echo off
+echo Reading your local application properties file...
+type %D:\workspace\icoblog\src\main\resources%\remote-application.properties >application.properties
