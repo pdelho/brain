@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.pablo.model.Contact;
 import com.pablo.service.ContactManager;
 
@@ -99,4 +98,19 @@ public class ContactsController {
 		return "contact/all";
 
 	}
+	
+	
+	
+//	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE)
+//	public String handleXMLPostRequest (@RequestBody Contact user,  Model model) {
+//		System.out.println(user);
+//		contactManager.saveContact(user);
+//		List<Contact> contacts = contactManager.getContacts();
+//		model.addAttribute("contacts", contacts);
+//		return "contact/all";
+//	}
+	
+	
+	
+	
 }
