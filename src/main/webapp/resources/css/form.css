@@ -25,6 +25,15 @@ $pink: #ee9cb4;
     }
 }
 
+span.error {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
+}
+
+
+
+
 // Functions
 
 @function pxtoem($target, $context){

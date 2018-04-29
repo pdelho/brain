@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +19,6 @@ public class ContactsController {
 
 	@Autowired
 	private ContactManager contactManager;
-
 
 	/**
 	 * READ ALL Contacts
@@ -40,49 +41,59 @@ public class ContactsController {
 	 */
 	@RequestMapping(value = "/contact/add", method = RequestMethod.GET)
 	public String addContact(Model model) {
+		Contact contact = new Contact();
+		model.addAttribute("contactForm", contact);
 		return "contact/add";
 
 	}
 
 	/**
 	 * SAVE a Contact
-	 * @param contact
+	 * @param contactForm
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/contact", method = RequestMethod.POST)
-	public String saveContact(@Validated Contact contact, Model model) {
+	public String saveContact(@Validated @ModelAttribute("contactForm") Contact contactForm, BindingResult result, Model model) {
 
-		boolean existContact = false;
-		if (contactManager.getContactById(contact.getContact_id()) != null) existContact = true;
-		if(!existContact){
-			// Create a new one and save it
-			Contact newContact = new Contact (contact.getFirstname(), contact.getLastname(), contact.getAddress(), contact.getEmail(), contact.getPhone());
-			// Save it
-			contactManager.saveContact(newContact);		
+		// Validate 
+		if (result.hasErrors()) {
+			return "contact/details";
+			
 		} else {
-			Contact updatedContact = contactManager.getContactById(contact.getContact_id());
-			updatedContact.setFirstname(contact.getFirstname());
-			updatedContact.setLastname(contact.getLastname());
-			updatedContact.setAddress(contact.getAddress());
-			updatedContact.setEmail(contact.getEmail());
-			updatedContact.setPhone(contact.getPhone());
-			contactManager.saveContact(updatedContact);
+			boolean existContact = false;
+			
+			if (contactManager.getContactById(contactForm.getContact_id()) != null) existContact = true;
+			
+			if(!existContact){
+				// Create a new one and save it
+				Contact newContact = new Contact (contactForm.getFirstname(), contactForm.getLastname(), contactForm.getAddress(), contactForm.getEmail(), contactForm.getPhone());
+				// Save it
+				contactManager.saveContact(newContact);	
+				
+			} else {
+				Contact updatedContact = contactManager.getContactById(contactForm.getContact_id());
+				updatedContact.setFirstname(contactForm.getFirstname());
+				updatedContact.setLastname(contactForm.getLastname());
+				updatedContact.setAddress(contactForm.getAddress());
+				updatedContact.setEmail(contactForm.getEmail());
+				updatedContact.setPhone(contactForm.getPhone());
+				contactManager.saveContact(updatedContact);
+			}
+			
+			// Get all Contactss and render them
+			List<Contact> contacts = contactManager.getContacts();
+			model.addAttribute("contacts", contacts);
+			model.addAttribute("success", true);
+			return "contact/all";		
 		}
-		
-
-		// Get all Contactss and render them
-		List<Contact> contacts = contactManager.getContacts();
-		model.addAttribute("contacts", contacts);
-		return "contact/all";
-
 	}
 
 	// To update or read a Contact, first we get a form with the details of the Contact
 	@RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
 	public String ContactForm(@PathVariable int id, Model model) {
 		Contact existingContact = contactManager.getContactById(id);
-		model.addAttribute("contact", existingContact);
+		model.addAttribute("contactForm", existingContact);
 		return "contact/details";
 
 	}
@@ -98,19 +109,5 @@ public class ContactsController {
 		return "contact/all";
 
 	}
-	
-	
-	
-//	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE)
-//	public String handleXMLPostRequest (@RequestBody Contact user,  Model model) {
-//		System.out.println(user);
-//		contactManager.saveContact(user);
-//		List<Contact> contacts = contactManager.getContacts();
-//		model.addAttribute("contacts", contacts);
-//		return "contact/all";
-//	}
-	
-	
-	
 	
 }

@@ -35,8 +35,35 @@
         <!-- Intro Content -->
         <div class="row">
 	        <spring:url value="/contact" var="postUpdateeUrl" />
-        	<form action="${postUpdateeUrl}" method="post">
-        	${contact.contact_id}
+	        <form:form method="POST" action="${postUpdateeUrl}" commandName="contactForm">
+	         
+	         	<form:input type="hidden" path="contact_id" value="${contact.contact_id}"  />
+	         
+	            <label for="title">First name</label>
+	            <form:errors path="firstname" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="firstname" placeholder="First Name"/></p>
+		        
+		        <label for="title">Last name</label>
+		        <form:errors path="lastname" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="lastname" placeholder="Last Name"/></p>
+		        
+		        <label for="title">Address</label>
+		        <p align ="right"><form:input type="text" path="address" placeholder="Street, number"/></p>
+		        
+		        <label for="title">Email</label>
+		        <form:errors path="email" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="email" placeholder="email@example.com"/></p>
+		        
+		        <label for="title">Phone</label>
+		        <p align ="right"><form:input type="text" path="phone" placeholder="+ 1 1234-1234"/></p>
+	         	
+	         	<input class="btn btn-primary" type="submit" value="Submit" />
+		        <small>or press <strong>enter</strong></small>
+	         
+	         </form:form>
+	        
+	        
+        	<%-- <form action="${postUpdateeUrl}" method="post">
         		<input type="hidden" name="contact_id" value="${contact.contact_id}"  />
         	
 	            <label for="title">First Name</label>
@@ -56,7 +83,7 @@
 		       
 		          <input class="btn btn-primary" type="submit" value="Update your information" />
 		          <small>or press <strong>enter</strong></small>
-		    </form>  
+		    </form>   --%>
             
         </div>
         <!-- /.row -->

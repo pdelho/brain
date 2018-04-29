@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 @Table(name = "contact")
 @XmlRootElement(name = "contact")
@@ -41,15 +44,19 @@ public class Contact implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long contact_id;
 	
+	@NotBlank
 	@Column(name = "firstname")
 	private String firstname;
 
+	@NotBlank
 	@Column(name = "lastname")
 	private String lastname;
 	
 	@Column(name = "address")
 	private String address;
 	
+	@Email
+	@NotBlank
 	@Column(name = "email")
 	private String email;
 	

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,19 +39,25 @@ public class ContactRESTController
     
     @RequestMapping(value = "/ws/contact", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Void> createUser(@RequestBody Contact contact,    UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating User " + contact.getFirstname());
-        Contact newContact = new Contact();
-        newContact.setFirstname(contact.getFirstname());
-        newContact.setLastname(contact.getLastname());
-        newContact.setAddress(contact.getAddress());
-        newContact.setEmail(contact.getEmail());
-        newContact.setPhone(contact.getPhone());
-        
-        contactManager.saveContact(newContact);
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/ws/contact/{id}").buildAndExpand(contact.getContact_id()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    public ResponseEntity<Void> createUser(@RequestBody @Validated Contact contact,  BindingResult result, UriComponentsBuilder ucBuilder) {
+        if (result.hasErrors()) {
+        	HttpHeaders headers = new HttpHeaders();
+            return new ResponseEntity<Void>(headers, HttpStatus.NOT_ACCEPTABLE);
+        } else {
+        	System.out.println("Creating User " + contact.getFirstname());
+            Contact newContact = new Contact();
+            newContact.setFirstname(contact.getFirstname());
+            newContact.setLastname(contact.getLastname());
+            newContact.setAddress(contact.getAddress());
+            newContact.setEmail(contact.getEmail());
+            newContact.setPhone(contact.getPhone());
+            
+            contactManager.saveContact(newContact);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(ucBuilder.path("/ws/contact/{id}").buildAndExpand(contact.getContact_id()).toUri());
+            return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        }
+    	
     }
 }

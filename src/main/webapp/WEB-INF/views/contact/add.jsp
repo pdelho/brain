@@ -35,21 +35,30 @@
         <!-- Intro Content -->
         <div class="row">
 	        <spring:url value="/contact" var="userActionUrl" />
-        	<form action="${userActionUrl}" method="post">
+	         <form:form method="POST" action="${userActionUrl}" commandName="contactForm">
+	         
 	            <label for="title">First name</label>
-		        <p align ="right"><input type="text" name="firstname" placeholder="First Name"  /></p>
+	            <form:errors path="firstname" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="firstname" placeholder="First Name"/></p>
+		        
 		        <label for="title">Last name</label>
-		        <p align ="right"><input type="text" name="lastname" placeholder="Last Name"  /></p>
+		        <form:errors path="lastname" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="lastname" placeholder="Last Name"/></p>
+		        
 		        <label for="title">Address</label>
-		        <p align ="right"><input type="text" name="address" placeholder="Address, number"  /></p>
+		        <p align ="right"><form:input type="text" path="address" placeholder="Street, number"/></p>
+		        
 		        <label for="title">Email</label>
-		        <p align ="right"><input type="text" name="email" placeholder="email@example.com"  /></p>
+		        <form:errors path="email" cssClass="error"/>
+		        <p align ="right"><form:input type="text" path="email" placeholder="email@example.com"/></p>
+		        
 		        <label for="title">Phone</label>
-		        <p align ="right"><input type="text" name="phone" placeholder="+34 600000000"  /></p>
-
-		          <input class="btn btn-primary" type="submit" value="Submit" />
-		          <small>or press <strong>enter</strong></small>
-		    </form>  
+		        <p align ="right"><form:input type="text" path="phone" placeholder="+ 1 1234-1234"/></p>
+	         	
+	         	<input class="btn btn-primary" type="submit" value="Submit" />
+		        <small>or press <strong>enter</strong></small>
+	         
+	         </form:form>
             
         </div>
         <!-- /.row -->
