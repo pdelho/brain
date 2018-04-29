@@ -41,9 +41,7 @@
 			</form>
 			<br>
 			
-			<c:if test="${success }"><span class ="success"> Your contact has been successfully saved!</span></c:if>
-			<span class ="success"> Your contact has been successfully saved!</span>
-			
+			<c:if test="${success }"><span class ="success"> Your contact has been successfully saved!</span></c:if>		
             <table class="tg">
 			  <tr>
 			    <th class="tg-9hbo">Id</th>
