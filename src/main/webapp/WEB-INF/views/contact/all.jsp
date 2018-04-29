@@ -35,7 +35,7 @@
         <!-- Intro Content -->
         <div class="row">
 	        
-            <div class="col-lg-24">
+            <div class="col-lg-12">
             <form action="<spring:url value ="/contact/add"/>">
 			    <input type="submit" value="Add a contact!" />
 			</form>
